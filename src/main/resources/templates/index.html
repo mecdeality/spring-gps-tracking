@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<input type="submit" value="Refresh" id="refresh">
+<script>
+    var map;
+
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(1.32643, 103.79426),
+            zoom: 15
+        };
+        map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+    }
+
+
+    function set_center() {
+        var feedback = $.ajax({
+            type: 'GET',
+            datatype:"json",
+            url:"http://localhost:8080/get-last-tracking",
+            success: function (data) {
+                console.log(data.longitude);
+                if (data.latitude != null && data.longitude != null ) {
+                    var latlng = new google.maps.LatLng(data.latitude, data.longitude);
+                    var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        title:"Hello World!"
+                    });
+                    map.setCenter(latlng)
+                };
+            },
+
+        });
+    }
+
+    setInterval(set_center, 5000);
+
+
+    // var pos = {lat:51.09649744583066, lng:71.42205395558761};
+    // $( document ).ready(function() {
+    //     refreshPage();
+    //         // $("#refresh").trigger('click')
+    // }); //time in milliseconds
+    //
+    //     // $('#refresh').click(function (e) {
+    //     //     console.log("clicking")
+    //     //     $.ajax({
+    //     //         type:"get",
+    //     //         url:"http://localhost:8080/get-last-tracking",
+    //     //         contentType: "application/json",
+    //     //         datatype:"json",
+    //     //         success:function(data)
+    //     //         {
+    //     //             // alert(data.latitude)
+    //     //             console.log(data.latitude, data.longitude);
+    //     //             location.reload();
+    //     //             pos.lat = data.latitude;
+    //     //             pos.lng = data.longitude;
+    //     //         }
+    //     //     });
+    //     //     e.preventDefault()
+    //     //     return false;
+    //     // })
+    // function refreshPage() {
+    //     $.ajax({
+    //         type:"get",
+    //         url:"http://localhost:8080/get-last-tracking",
+    //         contentType: "application/json",
+    //         datatype:"json",
+    //         success:function(data)
+    //         {
+    //             // alert(data.latitude)
+    //             console.log(data.latitude, data.longitude);
+    //             pos.lat = data.latitude;
+    //             pos.lng = data.longitude;
+    //         }
+    //     });
+    //     setTimeout(refreshPage, 3000);
+    // }
+    //
+    // function initMap() {
+    //     var opt = {
+    //         center: pos,
+    //         zoom: 20
+    //     }
+    //     var myMap = new google.maps.Map(document.getElementById("map"), opt);
+    //     var marker = new google.maps.Marker({
+    //         position: pos,
+    //         map: myMap,
+    //         title: "here"
+    //     })
+    // }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANWQPkszEZy7VMvrDPepCSG0yMpU-8Fcs&callback=initialize&libraries=places,geometry&solution_channel=GMP_QB_locatorplus_v4_cABD"></script>
+</body>
+
+</html>

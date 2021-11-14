@@ -1,0 +1,4 @@
+com\team2\gpstracking\GpsTrackingApplication.class
+com\team2\gpstracking\RestMapController.class
+com\team2\gpstracking\MapController.class
+com\team2\gpstracking\RestMapController$RestResponse.class
